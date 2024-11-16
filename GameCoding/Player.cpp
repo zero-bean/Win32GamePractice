@@ -1,28 +1,54 @@
 #include "pch.h"
 #include "Player.h"
 #include "InputManager.h"
+#include "ResourceManager.h"
+#include "TimeManager.h"
+#include "Flipbook.h"
+#include "Sprite.h"
+#include "Texture.h"
 
 Player::Player()
 {
+	_flipbookUp = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_PlayerUp");
+	_flipbookDown = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_PlayerDown");
+	_flipbookLeft = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_PlayerLeft");
+	_flipbookRight = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_PlayerRight");
 }
 
 Player::~Player()
 {
+
 }
 
 void Player::BeginPlay()
 {
 	Super::BeginPlay();
 
-
+	SetFlipbook(_flipbookDown);
 }
 
 void Player::Tick()
 {
 	Super::Tick();
 
-	if (GET_SINGLE(InputManager)->GetButtonDown(KeyType::S)) {
+	float deltaTime = GET_SINGLE(TimeManager)->GetDeltaTime();
 
+	if (GET_SINGLE(InputManager)->GetButton(KeyType::W)) {
+		_pos.y -= 200 * deltaTime;
+		SetFlipbook(_flipbookUp);
+	}
+	else if (GET_SINGLE(InputManager)->GetButton(KeyType::S)) {
+		_pos.y += 200 * deltaTime;
+		SetFlipbook(_flipbookDown);
+	}
+
+	if (GET_SINGLE(InputManager)->GetButton(KeyType::A)) {
+		_pos.x -= 200 * deltaTime;
+		SetFlipbook(_flipbookLeft);
+	}
+	else if (GET_SINGLE(InputManager)->GetButton(KeyType::D)) {
+		_pos.x += 200 * deltaTime;
+		SetFlipbook(_flipbookRight);
 	}
 }
 
