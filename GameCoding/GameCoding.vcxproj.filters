@@ -48,6 +48,12 @@
     <Filter Include="소스 파일\05. Component">
       <UniqueIdentifier>{47f05c59-3e39-4008-83cd-2ac865355ec2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\05. Component\Camera">
+      <UniqueIdentifier>{1903237d-c4e8-45bc-b57c-6243a9c70865}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\05. Component\Collision">
+      <UniqueIdentifier>{eb648705-9e73-464d-a0c0-f6077266252b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameCoding.h">
@@ -135,7 +141,19 @@
       <Filter>소스 파일\03. Objects\Unreal</Filter>
     </ClInclude>
     <ClInclude Include="CameraComponent.h">
-      <Filter>소스 파일\05. Component</Filter>
+      <Filter>소스 파일\05. Component\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="Collider.h">
+      <Filter>소스 파일\05. Component\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="BoxCollider.h">
+      <Filter>소스 파일\05. Component\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="SphereCollider.h">
+      <Filter>소스 파일\05. Component\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="CollisionManager.h">
+      <Filter>소스 파일\01. Manager</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -216,7 +234,19 @@
       <Filter>소스 파일\03. Objects\Unreal</Filter>
     </ClCompile>
     <ClCompile Include="CameraComponent.cpp">
-      <Filter>소스 파일\05. Component</Filter>
+      <Filter>소스 파일\05. Component\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="Collider.cpp">
+      <Filter>소스 파일\05. Component\Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="BoxCollider.cpp">
+      <Filter>소스 파일\05. Component\Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="SphereCollider.cpp">
+      <Filter>소스 파일\05. Component\Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="CollisionManager.cpp">
+      <Filter>소스 파일\01. Manager</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -46,3 +46,13 @@ void Actor::RemoveComponent(Component* component)
 
 	_components.erase(findIt);
 }
+
+void Actor::OnComponentBeginOverlap(Collider* collider, Collider* other)
+{
+
+}
+
+void Actor::OnComponentEndOverlap(Collider* collider, Collider* other)
+{
+
+}
