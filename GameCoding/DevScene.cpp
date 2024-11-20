@@ -71,31 +71,56 @@ void DevScene::Init()
 		SpriteActor* background = new SpriteActor();
 		Sprite* sprite = GET_SINGLE(ResourceManager)->GetSprite(L"Stage01");
 		background->SetSprite(sprite);
+		background->SetLayer(LAYER_BACKGROUND);
 		background->SetPos(Vec2(sprite->GetSize().x / 2, sprite->GetSize().y / 2));
 
-		_actors.push_back(background);
+		AddActor(background);
 	}
 
 	{
 		Player* player = new Player();
-		_actors.push_back(player);
+		AddActor(player);
 		player->SetPos({ 50, 50 });
 	}
 
-	for (Actor* actor : _actors)
-		actor->BeginPlay();
+	for (const vector<Actor*>& actors : _actors) {
+		for (Actor* actor : actors)
+			actor->BeginPlay();
+	}
 }
 
 void DevScene::Update()
 {
 	float deltaTime = GET_SINGLE(TimeManager)->GetDeltaTime();
 
-	for (Actor* actor : _actors)
-		actor->Tick();
+	for (const vector<Actor*>& actors : _actors) {
+		for (Actor* actor : actors)
+			actor->Tick();
+	}
 }
 
 void DevScene::Render(HDC hdc)
 {
-	for (Actor* actor : _actors)
-		actor->Render(hdc);
+	for (const vector<Actor*>& actors : _actors) {
+		for (Actor* actor : actors)
+			actor->Render(hdc);
+	}
+}
+
+void DevScene::AddActor(Actor* actor)
+{
+	if (actor == nullptr)
+		return;
+
+	_actors[actor->GetLayer()].push_back(actor);
+}
+
+void DevScene::RemoveActor(Actor* actor)
+{
+	if (actor == nullptr)
+		return;
+
+	vector<Actor*>& v = _actors[actor->GetLayer()];
+
+	v.erase(remove(v.begin(), v.end(), actor), v.end());
 }

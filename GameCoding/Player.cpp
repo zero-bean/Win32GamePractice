@@ -6,6 +6,7 @@
 #include "Flipbook.h"
 #include "Sprite.h"
 #include "Texture.h"
+#include "CameraComponent.h"
 
 Player::Player()
 {
@@ -13,6 +14,9 @@ Player::Player()
 	_flipbookDown = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_PlayerDown");
 	_flipbookLeft = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_PlayerLeft");
 	_flipbookRight = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_PlayerRight");
+
+	CameraComponent* camera = new CameraComponent();
+	AddComponent(camera);
 }
 
 Player::~Player()
