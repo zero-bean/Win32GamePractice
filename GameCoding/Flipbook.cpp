@@ -3,8 +3,10 @@
 
 Flipbook::Flipbook()
 {
+
 }
 
 Flipbook::~Flipbook()
 {
+
 }

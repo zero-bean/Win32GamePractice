@@ -1,5 +1,6 @@
 #pragma once
 #include "Collider.h"
+
 class SphereCollider : public Collider
 {
 	using Super = Collider;

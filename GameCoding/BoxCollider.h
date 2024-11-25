@@ -1,8 +1,9 @@
 #pragma once
 #include "Collider.h"
+
 class BoxCollider : public Collider
 {
-	using Super = Collider;
+using Super = Collider;
 
 public:
 	BoxCollider();

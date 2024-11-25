@@ -104,50 +104,60 @@ struct VectorInt
 {
 	VectorInt() {}
 	VectorInt(int32 x, int32 y) : x(x), y(y) {}
-	VectorInt(POINT pt) : x((int32)pt.x), y((int32)pt.y) { }
+	VectorInt(POINT pt) : x(pt.x), y(pt.y) { }
 
-	Vector operator+(const Vector& other)
+	VectorInt operator+(const VectorInt& other)
 	{
-		Vector ret;
+		VectorInt ret;
 		ret.x = x + other.x;
 		ret.y = y + other.y;
 		return ret;
 	}
 
-	Vector operator-(const Vector& other)
+	VectorInt operator-(const VectorInt& other)
 	{
-		Vector ret;
+		VectorInt ret;
 		ret.x = x - other.x;
 		ret.y = y - other.y;
 		return ret;
 	}
 
-	Vector operator*(int32 value)
+	VectorInt operator*(int32 value)
 	{
-		Vector ret;
+		VectorInt ret;
 		ret.x = x * value;
 		ret.y = y * value;
 		return ret;
 	}
 
-	void operator+=(const Vector& other)
+	void operator+=(const VectorInt& other)
 	{
 		x += other.x;
 		y += other.y;
 	}
 
-	void operator-=(const Vector& other)
+	void operator-=(const VectorInt& other)
 	{
 		x -= other.x;
 		y -= other.y;
 	}
 
-	float Dot(Vector other)
+	int32 LengthSquared()
+	{
+		return x * x + y * y;
+	}
+
+	float Length()
+	{
+		return (float)::sqrt(LengthSquared());
+	}
+
+	int32 Dot(VectorInt other)
 	{
 		return x * other.x + y * other.y;
 	}
 
-	float Cross(Vector other)
+	int32 Cross(VectorInt other)
 	{
 		return x * other.y - y * other.x;
 	}

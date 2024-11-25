@@ -2,7 +2,6 @@
 #include "SceneManager.h"
 #include "DevScene.h"
 #include "EditScene.h"
-#include "FortressScene.h"
 
 void SceneManager::Init()
 {

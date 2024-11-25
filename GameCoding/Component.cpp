@@ -3,16 +3,9 @@
 
 Component::Component()
 {
+
 }
 
 Component::~Component()
-{
-}
-
-void Component::BeginPlay()
-{
-}
-
-void Component::TickComponent()
 {
 }

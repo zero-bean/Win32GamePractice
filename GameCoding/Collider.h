@@ -1,8 +1,6 @@
 #pragma once
-
 #include "Component.h"
 
-class Collider;
 class BoxCollider;
 class SphereCollider;
 
@@ -19,7 +17,6 @@ public:
 	virtual bool CheckCollision(Collider* other);
 
 	ColliderType GetColliderType() { return _colliderType; }
-
 	void SetShowDebug(bool show) { _showDebug = show; }
 
 public:
@@ -29,10 +26,9 @@ public:
 
 protected:
 	ColliderType _colliderType;
-	bool _showDebug = false;
+	bool _showDebug = true;
 
 public:
 	unordered_set<Collider*> _collisionMap;
-	uint32 _flag = 0;
 };
 

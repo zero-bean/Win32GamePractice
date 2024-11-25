@@ -3,7 +3,8 @@
 
 class Texture;
 
-struct FlipbookInfo {
+struct FlipbookInfo
+{
 	Texture* texture = nullptr;
 	wstring name;
 	Vec2Int size = {};

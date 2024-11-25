@@ -1,19 +1,17 @@
 #include "pch.h"
 #include "Player.h"
 #include "InputManager.h"
-#include "ResourceManager.h"
 #include "TimeManager.h"
+#include "ResourceManager.h"
 #include "Flipbook.h"
-#include "Sprite.h"
-#include "Texture.h"
 #include "CameraComponent.h"
 
 Player::Player()
 {
-	_flipbookUp = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_PlayerUp");
-	_flipbookDown = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_PlayerDown");
-	_flipbookLeft = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_PlayerLeft");
-	_flipbookRight = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_PlayerRight");
+	_flipbookUp = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_MoveUp");
+	_flipbookDown = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_MoveDown");
+	_flipbookLeft = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_MoveLeft");
+	_flipbookRight = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_MoveRight");
 
 	CameraComponent* camera = new CameraComponent();
 	AddComponent(camera);
@@ -28,7 +26,7 @@ void Player::BeginPlay()
 {
 	Super::BeginPlay();
 
-	SetFlipbook(_flipbookDown);
+	SetFlipbook(_flipbookRight);	
 }
 
 void Player::Tick()
@@ -37,20 +35,24 @@ void Player::Tick()
 
 	float deltaTime = GET_SINGLE(TimeManager)->GetDeltaTime();
 
-	if (GET_SINGLE(InputManager)->GetButton(KeyType::W)) {
+	// TODO
+	if (GET_SINGLE(InputManager)->GetButton(KeyType::W))
+	{
 		_pos.y -= 200 * deltaTime;
 		SetFlipbook(_flipbookUp);
 	}
-	else if (GET_SINGLE(InputManager)->GetButton(KeyType::S)) {
+	else if (GET_SINGLE(InputManager)->GetButton(KeyType::S))
+	{
 		_pos.y += 200 * deltaTime;
 		SetFlipbook(_flipbookDown);
 	}
-
-	if (GET_SINGLE(InputManager)->GetButton(KeyType::A)) {
+	else  if  (GET_SINGLE(InputManager)->GetButton(KeyType::A))
+	{
 		_pos.x -= 200 * deltaTime;
 		SetFlipbook(_flipbookLeft);
 	}
-	else if (GET_SINGLE(InputManager)->GetButton(KeyType::D)) {
+	else  if (GET_SINGLE(InputManager)->GetButton(KeyType::D))
+	{
 		_pos.x += 200 * deltaTime;
 		SetFlipbook(_flipbookRight);
 	}
@@ -65,7 +67,7 @@ void Player::Render(HDC hdc)
 
 void Player::OnComponentBeginOverlap(Collider* collider, Collider* other)
 {
-
+	
 }
 
 void Player::OnComponentEndOverlap(Collider* collider, Collider* other)

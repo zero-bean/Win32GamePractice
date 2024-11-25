@@ -1,31 +1,41 @@
 #include "pch.h"
 #include "Actor.h"
 #include "Component.h"
+#include "Collider.h"
 
 Actor::Actor()
 {
+
 }
 
 Actor::~Actor()
 {
+	for (Component* component : _components)
+		SAFE_DELETE(component);
 }
 
 void Actor::BeginPlay()
 {
 	for (Component* component : _components)
+	{
 		component->BeginPlay();
+	}
 }
 
 void Actor::Tick()
 {
 	for (Component* component : _components)
+	{
 		component->TickComponent();
+	}
 }
 
 void Actor::Render(HDC hdc)
 {
 	for (Component* component : _components)
+	{
 		component->Render(hdc);
+	}
 }
 
 void Actor::AddComponent(Component* component)
@@ -39,8 +49,7 @@ void Actor::AddComponent(Component* component)
 
 void Actor::RemoveComponent(Component* component)
 {
-	auto findIt = find(_components.begin(), _components.end(), component);
-
+	auto findIt = std::find(_components.begin(), _components.end(), component);
 	if (findIt == _components.end())
 		return;
 

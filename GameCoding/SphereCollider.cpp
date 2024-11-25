@@ -1,11 +1,10 @@
 #include "pch.h"
 #include "SphereCollider.h"
-#include "BoxCollider.h"
 #include "SceneManager.h"
 #include "Actor.h"
+#include "BoxCollider.h"
 
-SphereCollider::SphereCollider() 
-	: Collider(ColliderType::Sphere)
+SphereCollider::SphereCollider() : Collider(ColliderType::Sphere)
 {
 
 }
@@ -43,24 +42,19 @@ void SphereCollider::Render(HDC hdc)
 
 	HBRUSH myBrush = (HBRUSH)::GetStockObject(NULL_BRUSH);
 	HBRUSH oldBrush = (HBRUSH)::SelectObject(hdc, myBrush);
-	HPEN myPen = CreatePen(PS_SOLID, 1, RGB(255, 0, 0));
-	HPEN oldPen = (HPEN)::SelectObject(hdc, myPen);
-
 	Utils::DrawCircle(hdc, pos, _radius);
-
 	::SelectObject(hdc, oldBrush);
 	::DeleteObject(myBrush);
-	::SelectObject(hdc, oldPen);
-	::DeleteObject(myPen);
 }
 
 bool SphereCollider::CheckCollision(Collider* other)
 {
-	switch (other->GetColliderType()) {
-		case ColliderType::Sphere:
-			return CheckCollisionSphere2Sphere(this, static_cast<SphereCollider*>(other));
+	switch (other->GetColliderType())
+	{
 		case ColliderType::Box:
 			return CheckCollisionSphere2Box(this, static_cast<BoxCollider*>(other));
+		case ColliderType::Sphere:
+			return CheckCollisionSphere2Sphere(this, static_cast<SphereCollider*>(other));
 	}
 
 	return false;

@@ -2,6 +2,8 @@
 #include "Scene.h"
 
 class Actor;
+class GameObject;
+class UI;
 
 class DevScene : public Scene
 {
@@ -18,5 +20,6 @@ public:
 
 public:
 	vector<Actor*> _actors[LAYER_MAXCOUNT];
+	vector<UI*> _uis;
 };
 

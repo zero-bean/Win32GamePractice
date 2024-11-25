@@ -9,6 +9,8 @@ public:
 
 	virtual void BeginPlay() override;
 	virtual void TickComponent() override;
-	virtual void Render(HDC hdc) override {};
+	virtual void Render(HDC hdc) override;
+
+
 };
 

@@ -13,6 +13,12 @@ Sprite::~Sprite()
 
 }
 
-HDC Sprite::GetDC() { return _texture->GetDC();}
+HDC Sprite::GetDC()
+{
+	return _texture->GetDC();
+}
 
-int32 Sprite::GetTransParent() { return _texture->GetTransparent(); }
+int32 Sprite::GetTransparent()
+{
+	return _texture->GetTransparent();
+}
