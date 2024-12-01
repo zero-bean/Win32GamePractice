@@ -1,5 +1,7 @@
 #include "pch.h"
 #include "Tilemap.h"
+#include "fstream"
+#include "istream"
 
 Tilemap::Tilemap()
 {
@@ -13,12 +15,51 @@ Tilemap::~Tilemap()
 
 void Tilemap::LoadFile(const wstring& path)
 {
+	// C++ 스타일
+	{
+		wifstream ifs;
 
+		ifs.open(path);
+
+		ifs >> _mapSize.x;
+		ifs >> _mapSize.y;
+
+		SetMapSize(_mapSize);
+
+		for (int32 y = 0; y < _mapSize.y; y++) {
+			wstring line;
+			ifs >> line;
+
+			for (int32 x = 0; x < _mapSize.x; x++) {
+				_tiles[y][x].value = line[x] - L'0';
+			}
+		}
+
+		ifs.close();
+	}
 }
 
 void Tilemap::SaveFile(const wstring& path)
 {
+	// C++ 스타일
+	{
+		wofstream ofs;
 
+		ofs.open(path);
+
+		ofs << _mapSize.x << endl;
+		ofs << _mapSize.y << endl;
+
+		for (int32 y = 0; y < _mapSize.y; y++) {
+			for (int32 x = 0; x < _mapSize.x; x++) {
+				ofs << _tiles[y][x].value;
+			}
+
+			ofs << endl;
+		}
+
+		ofs.close();
+	}
 }
 
 Tile* Tilemap::GetTileAt(Vec2Int pos)
