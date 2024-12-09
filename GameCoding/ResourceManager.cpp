@@ -4,6 +4,7 @@
 #include "Sprite.h"
 #include "Flipbook.h"
 #include "Tilemap.h"
+#include "Sound.h"
 
 ResourceManager::~ResourceManager()
 {
@@ -118,4 +119,18 @@ Tilemap* ResourceManager::LoadTilemap(const wstring& key, const wstring& path)
 	tm->LoadFile(fullPath);
 
 	return tm;
+}
+
+Sound* ResourceManager::LoadSound(const wstring& key, const wstring& path)
+{
+	if (_sounds.find(key) != _sounds.end())
+		return _sounds[key];
+
+	fs::path fullPath = _resourcePath / path;
+	
+	Sound* sound = new Sound();
+	sound->LoadWave(fullPath);
+	_sounds[key] = sound;
+
+	return sound;
 }

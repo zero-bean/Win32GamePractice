@@ -5,6 +5,7 @@
 #include "ResourceManager.h"
 #include "Flipbook.h"
 #include "CameraComponent.h"
+#include "BoxCollider.h"
 
 Player::Player()
 {
@@ -56,6 +57,12 @@ void Player::Tick()
 		_pos.x += 200 * deltaTime;
 		SetFlipbook(_flipbookRight);
 	}
+	else  if (GET_SINGLE(InputManager)->GetButton(KeyType::SpaceBar))
+	{
+		Jump();
+	}
+
+	TickGravity();
 }
 
 void Player::Render(HDC hdc)
@@ -67,10 +74,62 @@ void Player::Render(HDC hdc)
 
 void Player::OnComponentBeginOverlap(Collider* collider, Collider* other)
 {
-	
+	BoxCollider* b1 = dynamic_cast<BoxCollider*>(collider);
+	BoxCollider* b2 = dynamic_cast<BoxCollider*>(other);
+
+	if (b1 == nullptr || b2 == nullptr)
+		return;
+
+	AdjustCollisionPos(b1, b2);
 }
 
 void Player::OnComponentEndOverlap(Collider* collider, Collider* other)
 {
 
+}
+
+void Player::Jump()
+{
+
+}
+
+void Player::TickGravity()
+{
+	float deltaTime = GET_SINGLE(TimeManager)->GetDeltaTime();
+
+	_pos.y += deltaTime * _gravity;
+}
+
+void Player::AdjustCollisionPos(BoxCollider* b1, BoxCollider* b2)
+{
+	RECT r1 = b1->GetRect();
+	RECT r2 = b2->GetRect();
+
+	Vec2 pos = GetPos();
+
+	RECT intersect = {};
+
+	if (::IntersectRect(&intersect, &r1, &r2)) {
+		int32 w = intersect.right - intersect.left;
+		int32 h = intersect.bottom - intersect.top;
+
+		if (w > h) {
+			if (intersect.top == r2.top) {
+				pos.y -= h;
+			}
+			else {
+				pos.y += h;
+			}
+		}
+		else {
+			if (intersect.left == r2.left) {
+				pos.x -= w;
+			}
+			else {
+				pos.x += w;
+			}
+		}
+	}
+
+	SetPos(pos);
 }

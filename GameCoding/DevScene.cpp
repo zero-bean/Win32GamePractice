@@ -17,6 +17,8 @@
 #include "Button.h"
 #include "Tilemap.h"
 #include "TilemapActor.h"
+#include "SoundManager.h"
+#include "Sound.h"
 
 DevScene::DevScene()
 {
@@ -98,38 +100,70 @@ void DevScene::Init()
 	{
 		Player* player = new Player();
 		{
-			SphereCollider* collider = new SphereCollider();
-			collider->SetRadius(100);
+			BoxCollider* collider = new BoxCollider();
+			collider->SetSize({ 100, 100 });
+			collider->SetCollisionLayer(CLT_OBJECT);
+			collider->AddCollisionLayer(CLT_GROUND);
+			collider->AddCollisionLayer(CLT_WALL);
+
+			player->SetLayer(LAYER_OBJECT);
 			player->AddComponent(collider);
+
 			GET_SINGLE(CollisionManager)->AddCollider(collider);
 		}
 		AddActor(player);
 	}
 
 	{
-		Actor* player = new Actor();
+		Actor* test = new Actor();
 		{
-			SphereCollider* collider = new SphereCollider();
-			collider->SetRadius(50);
-			player->AddComponent(collider);
+			BoxCollider* collider = new BoxCollider();
+			collider->SetSize({ 100, 100 });
+			collider->SetCollisionLayer(CLT_WALL);
+
+			test->SetPos({400, 200});
+			test->SetLayer(LAYER_OBJECT);
+			test->AddComponent(collider);
+
 			GET_SINGLE(CollisionManager)->AddCollider(collider);
-			player->SetPos({400, 200});
 		}
-		AddActor(player);
+		AddActor(test);
 	}
 
 	{
-		TilemapActor* actor = new TilemapActor();
-		AddActor(actor);
-		_tilemapActor = actor;
+		Actor* test = new Actor();
 		{
-			auto* tm = GET_SINGLE(ResourceManager)->CreateTilemap(L"Tilemap_01");
-			tm->SetMapSize({ 63, 43 });
-			tm->SetTileSize(48);
+			BoxCollider* collider = new BoxCollider();
+			collider->SetSize({ 1000, 100 });
+			collider->SetCollisionLayer(CLT_GROUND);
 
-			_tilemapActor->SetTilemap(tm);
-			_tilemapActor->SetShowDebug(true);
+			test->SetPos({ 200, 400 });
+			test->SetLayer(LAYER_OBJECT);
+			test->AddComponent(collider);
+
+			GET_SINGLE(CollisionManager)->AddCollider(collider);
 		}
+		AddActor(test);
+	}
+
+	{
+		//TilemapActor* actor = new TilemapActor();
+		//AddActor(actor);
+		//_tilemapActor = actor;
+		{
+			//auto* tm = GET_SINGLE(ResourceManager)->CreateTilemap(L"Tilemap_01");
+			//tm->SetMapSize({ 63, 43 });
+			//tm->SetTileSize(48);
+
+			//_tilemapActor->SetTilemap(tm);
+			//_tilemapActor->SetShowDebug(true);
+		}
+	}
+
+	GET_SINGLE(ResourceManager)->LoadSound(L"BGM", L"Sound\\BGM.wav");
+	{
+		Sound* sound = GET_SINGLE(ResourceManager)->GetSound(L"BGM");
+		sound->Play(true);
 	}
 
 	Super::Init();
