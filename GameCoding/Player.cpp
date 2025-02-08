@@ -39,9 +39,6 @@ void Player::BeginPlay()
 {
 	Super::BeginPlay();
 
-	SetState(PlayerState::Move);
-	SetState(PlayerState::Idle);
-
 	SetCellPos({5, 5}, true);
 }
 
@@ -49,18 +46,6 @@ void Player::Tick()
 {
 	Super::Tick();
 
-	switch (_state)
-	{
-	case PlayerState::Idle:
-		TickIdle();
-		break;
-	case PlayerState::Move:
-		TickMove();
-		break;
-	case PlayerState::Skill:
-		TickSkill();
-		break;
-	}
 }
 
 void Player::Render(HDC hdc)
@@ -78,13 +63,13 @@ void Player::TickIdle()
 
 	if (GET_SINGLE(InputManager)->GetButton(KeyType::W))
 	{
-		SetDir(DIR_UP);
+		Super::SetDir(DIR_UP);
 
 		Vec2Int nextPos = _cellPos + deltaXY[_dir];
 		if (CanGo(nextPos))
 		{
 			SetCellPos(nextPos);
-			SetState(PlayerState::Move);
+			SetState(ObjectState::Move);
 		}
 	}
 	else  if (GET_SINGLE(InputManager)->GetButton(KeyType::S))
@@ -95,7 +80,7 @@ void Player::TickIdle()
 		if (CanGo(nextPos))
 		{
 			SetCellPos(nextPos);
-			SetState(PlayerState::Move);
+			SetState(ObjectState::Move);
 		}
 	}
 	else if (GET_SINGLE(InputManager)->GetButton(KeyType::A))
@@ -105,7 +90,7 @@ void Player::TickIdle()
 		if (CanGo(nextPos))
 		{
 			SetCellPos(nextPos);
-			SetState(PlayerState::Move);
+			SetState(ObjectState::Move);
 		}
 	}
 	else if (GET_SINGLE(InputManager)->GetButton(KeyType::D))
@@ -115,13 +100,13 @@ void Player::TickIdle()
 		if (CanGo(nextPos))
 		{
 			SetCellPos(nextPos);
-			SetState(PlayerState::Move);
+			SetState(ObjectState::Move);
 		}
 	}
 	else
 	{
 		_keyPressed = false;
-		if (_state == PlayerState::Idle)
+		if (_state == ObjectState::Idle)
 			UpdateAnimation();
 	}
 }
@@ -131,9 +116,9 @@ void Player::TickMove()
 	float deltaTime = GET_SINGLE(TimeManager)->GetDeltaTime();
 
 	Vec2 dir = (_destPos - _pos);	
-	if (dir.Length() < 10.f)
+	if (dir.Length() < 5.f)
 	{
-		SetState(PlayerState::Idle);
+		SetState(ObjectState::Idle);
 		_pos = _destPos;
 	}
 	else
@@ -161,65 +146,21 @@ void Player::TickSkill()
 
 }
 
-void Player::SetState(PlayerState state)
-{
-	if (_state == state)
-		return;
-
-	_state = state;
-	UpdateAnimation();
-}
-
-void Player::SetDir(Dir dir)
-{
-	_dir = dir;
-	UpdateAnimation();
-}
-
 void Player::UpdateAnimation()
 {
 	switch (_state)
 	{
-	case PlayerState::Idle:
+	case ObjectState::Idle:
 		if (_keyPressed)
-			SetFlipbook(_flipbookMove[_dir]); 
+			SetFlipbook(_flipbookMove[_dir]);
 		else
 			SetFlipbook(_flipbookIdle[_dir]);
 		break;
-	case PlayerState::Move:
-		SetFlipbook(_flipbookMove[_dir]);
-		break;
-	case PlayerState::Skill:
+	case ObjectState::Move:
+			SetFlipbook(_flipbookMove[_dir]);
+			break;
+	case ObjectState::Skill:
 		SetFlipbook(_flipbookAttack[_dir]);
 		break;
 	}
-}
-
-bool Player::HasReachedDest()
-{
-	Vec2 dir = (_destPos - _pos);
-	return (dir.Length() < 10.f);
-}
-
-bool Player::CanGo(Vec2Int cellPos)
-{
-	DevScene* scene = dynamic_cast<DevScene*>(GET_SINGLE(SceneManager)->GetCurrentScene());
-	if (scene == nullptr)
-		return false;
-
-	return scene->CanGo(cellPos);
-}
-
-void Player::SetCellPos(Vec2Int cellPos, bool teleport)
-{
-	_cellPos = cellPos;
-	
-	DevScene* scene = dynamic_cast<DevScene*>(GET_SINGLE(SceneManager)->GetCurrentScene());
-	if (scene == nullptr)
-		return;
-
-	_destPos = scene->ConvertPos(cellPos);
-
-	if (teleport)
-		_pos = _destPos;		
 }
